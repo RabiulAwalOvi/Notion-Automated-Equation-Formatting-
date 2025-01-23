@@ -106,8 +106,8 @@ This ensures equations render correctly in Notion.
 
 ---
 
-## **License**
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-```
+
 
 This README file provides clear instructions on the purpose, setup, integration, and usage of the script while maintaining a professional tone for a GitHub repository. Let me know if you'd like further refinements!
+
+`Slow process for LARGE Notion Page. Make It Faster If u are a devoloper and Let me Know`
