@@ -1,4 +1,4 @@
-```markdown
+
 # Notion Equation Rendering Enhancement
 
 This script enhances equation rendering in Notion by identifying LaTeX equations pasted into a Notion page and converting them into a format compatible with Notion's native equation blocks. It ensures proper handling of mathematical expressions, retaining formatting while addressing potential issues with colon placement and preserving text structure.
@@ -30,7 +30,7 @@ When pasting LaTeX equations into Notion, users often encounter rendering incons
 
    ```bash
    pip install requests
-   ```
+
 
 4. Update the following configuration in the script:
    - Replace `NOTION_API_KEY` with your Notion integration API key.
