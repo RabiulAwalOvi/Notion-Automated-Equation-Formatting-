@@ -1,113 +1,79 @@
+# Notion Equation Formatter
 
-# Notion Equation Rendering Enhancement
+Automatically convert LaTeX equations in Notion pages to proper KaTeX formatting for seamless integration of AI-generated content.
 
-This script enhances equation rendering in Notion by identifying LaTeX equations pasted into a Notion page and converting them into a format compatible with Notion's native equation blocks. It ensures proper handling of mathematical expressions, retaining formatting while addressing potential issues with colon placement and preserving text structure.
+## Features
+- 🔍 Scans Notion pages for LaTeX equations
+- 🔄 Converts `\(...\)`, `\[...\]`, and `equation`/`align` environments to Notion-compatible `$$...$$` format
+- ⚡ Processes blocks in parallel for faster conversion
+- 🔄 Preserves original text formatting while updating equations
 
----
+## Prerequisites
+- Python 3.6+
+- Notion account
+- [Notion Integration](https://www.notion.so/my-integrations) with:
+  - **Internal Integration Token**
+  - Page permissions granted to your integration
 
-## **Purpose**
+## Setup Instructions
 
-When pasting LaTeX equations into Notion, users often encounter rendering inconsistencies or formatting issues, particularly when transitioning between text and equations. This script solves these problems by:
+1. **Create Notion Integration**
+   - Go to [My Integrations](https://www.notion.so/my-integrations)
+   - Create new integration named "Equation_Fixer"
+   - Copy your **Internal Integration Secret**
 
-1. **Automated Equation Conversion**: Converts various LaTeX equation formats (e.g., `$$...$$`, `\[...\]`, `\begin{equation}...\end{equation}`) into Notion's equation blocks.
-2. **Colon Preservation**: Ensures colons before or after equations remain appropriately formatted.
-3. **Seamless Integration**: Maintains the structure of Notion blocks, including text, equations, and other content.
-4. **Recursive Processing**: Handles nested blocks and child blocks in complex Notion pages.
+2. **Prepare Notion Page**
+   - Create a dedicated page (e.g., "Eqn_Fix")
+   - Share the page with your integration via `•••` → `Add connections`
 
----
+3. **Configure Script**
+   ```python
+   # ==========================
+   # Configuration
+   # ==========================
+   NOTION_API_KEY = "your_integration_secret_here"
+   PAGE_URL = "your_notion_page_url_here"
+   ```
 
-## **Integration with Notion**
-
-### **Requirements**
-1. A Notion integration with access to the target page.
-2. Python installed on your system.
-3. Dependencies: `requests` and `re`.
-
-### **Setup**
-1. Create a Notion integration and get its **API Key**.
-2. Share the target Notion page with the integration's email.
-3. Clone this repository and install dependencies:
-
-   ```bash
-   pip install requests
-
-
-4. Update the following configuration in the script:
-   - Replace `NOTION_API_KEY` with your Notion integration API key.
-   - Replace `PAGE_URL` with the URL of the Notion page to process.
-
-### **Running the Script**
-Run the script using:
-
+## Installation
 ```bash
-python <script_name>.py
+git clone https://github.com/yourusername/notion-equation-formatter.git
+cd notion-equation-formatter
+pip install requests
 ```
 
-The script will:
-1. Parse the Notion page URL to extract the page ID.
-2. Fetch all blocks from the page.
-3. Identify blocks containing LaTeX equations needing updates.
-4. Convert and update these blocks with Notion-compatible equation formats.
+## Usage
+1. Paste AI-generated content into your dedicated Notion page using `Ctrl/Cmd+Shift+V`
+2. Run the script:
+   ```bash
+   python notion_equation_formatter.py
+   ```
+3. Wait for processing (typically 5-30 seconds depending on content length)
+4. Copy fixed content to your final notes location
 
----
+## How It Works
+1. **Page Analysis**  
+   Fetches all blocks from the target Notion page through the API
 
-## **Code Overview**
+2. **Equation Detection**  
+   Identifies blocks containing LaTeX equations using regex patterns
 
-### **Key Functions**
-1. **`parse_page_url(notion_url: str) -> str`**  
-   Extracts the page ID from the provided Notion URL.
+3. **Format Conversion**  
+   - Converts inline equations (`\(...\)`) to `$$...$$`
+   - Converts display equations (`\[...\]`, `equation`/`align` environments) to `$$...$$`
+   - Preserves text formatting and non-equation content
 
-2. **`get_all_blocks(block_id: str)`**  
-   Recursively fetches all blocks (and their children) from a Notion page.
+4. **Parallel Processing**  
+   Updates blocks concurrently using thread pooling for faster processing
 
-3. **`extract_block_content(block)`**  
-   Extracts text and equation content from a block.
+## Limitations
+- Complex LaTeX macros may require manual adjustment
+- Rate limited by Notion's API (≈3-5 requests/second)
+- Equations in nested blocks (e.g., toggle lists) might need multiple runs
 
-4. **`needs_equation_update(block)`**  
-   Checks if a block contains LaTeX equations needing conversion.
+## Troubleshooting
+- `401 Unauthorized`: Verify integration secret and page sharing
+- `404 Not Found`: Check page URL formatting
+- Equations not updating: Ensure content was pasted as unformatted text
 
-5. **`update_block_equations(block)`**  
-   Converts LaTeX equations to Notion's equation format, handling text and colons.
-
-6. **`process_blocks(page_id: str)`**  
-   Iterates through all blocks, updating equations where necessary.
-
-### **Execution Flow**
-The `main` function orchestrates the process:
-- Parses the Notion page URL.
-- Processes all blocks, updating equations as needed.
-- Outputs completion status.
-
----
-
-## **Limitations**
-1. Assumes the Notion page is shared with the integration.
-2. Only processes blocks with LaTeX equations in specific formats.
-3. May require updates for new Notion API versions.
-
----
-
-## **Example Use Case**
-A user has a Notion page containing:
-
-```
-E=mc^2 is represented as:
-\[ E = mc^2 \]
-```
-
-After running the script, it converts to:
-
-```
-E=mc^2 is represented as:
-$$E = mc^2$$
-```
-
-This ensures equations render correctly in Notion.
-
----
-
-
-
-This README file provides clear instructions on the purpose, setup, integration, and usage of the script while maintaining a professional tone for a GitHub repository. Let me know if you'd like further refinements!
-
-`Slow process for LARGE Notion Page. Make It Faster If u are a devoloper and Let me Know`
+**Pro Tip:** Use this with AI-generated STEM content from ChatGPT/Claude for seamless technical note-taking in Notion! 🚀
